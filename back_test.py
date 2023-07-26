@@ -26,7 +26,7 @@ def re_balance(context, bar_dict):
 
         # Sell the old funds at the end of the current month
         if get_next_trading_date(current_trading_date).month != current_trading_date.month:
-            to_buy_list = rank(context, fund_list=context.fund_list, day=str(current_trading_date))[:60].index
+            to_buy_list = rank(context, fund_list=context.fund_list, day=str(current_trading_date))[:20].index
             for order_book_id in position_ids:
                 if order_book_id not in to_buy_list:
                     order_target_percent(order_book_id, 0)
@@ -39,15 +39,15 @@ def re_balance(context, bar_dict):
                                       )).month == current_trading_date.month:
             to_buy = rank(context, fund_list=context.fund_list, day=str(current_trading_date))
             to_buy_list = to_buy.index
-            for order_book_id in to_buy_list[:60]:
+            for order_book_id in to_buy_list[:20]:
                 if order_book_id not in position_ids:
-                    order_target_percent(order_book_id, 1 / 60)
+                    order_target_percent(order_book_id, 1 / 20)
             context.first_trade = False
             context.months_since_rebalance = 0
     try:
         num = 1
         while context.portfolio.cash > 100000 and num < 20:
-            order_target_percent(to_buy_list[num], 1 / 60)
+            order_target_percent(to_buy_list[num], 1 / 10)
             print('additional buy')
             num += 1
     except:
